@@ -23,5 +23,3 @@ def test_map_point_added():
     p1 = Point("Dakar", 14.7167, 17.4677)
     m1 = Map("Africa", [p1])
     assert m1.get_points() == [p1]
-
-
