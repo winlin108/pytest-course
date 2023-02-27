@@ -27,14 +27,12 @@ class FitnessLog:
         if self._activities == []:
             return False
         else:
-            not_overlapping = True
             for exercise in self._activities:
                 logged_start = exercise[1]
                 logged_end = exercise[2]
-                not_overlapping = (start_time < logged_end) and (end_time > logged_start)
-                if not_overlapping == False:
-                    return not_overlapping
-            return not_overlapping
+                if (start_time < logged_end) and (end_time > logged_start):
+                    return True
+            return False
 
 
     def delete_activity(self, kind, start_time, end_time):

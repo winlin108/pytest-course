@@ -9,7 +9,7 @@ def create_tracker():
 
     start_time = datetime(year=2017, month=1, day=1, hour=5, minute=12)
     end_time = datetime(year=2017, month=1, day=1, hour=5, minute=55)
-    # breakpoint()
+
     fitness_tracker.log_activity("run", start_time, end_time)
 
     yield fitness_tracker
@@ -17,7 +17,7 @@ def create_tracker():
 
 def test_add_valid_activities(create_tracker):
     fitness_tracker = create_tracker
-    # breakpoint()
+
     activities = fitness_tracker.get_activities()
 
     assert len(activities) == 1
@@ -50,5 +50,33 @@ def test_add_invalid_activity(create_tracker, create_overlapping_times):
 """
 
 
-def test_function():  # change function name here
-    pass
+@pytest.fixture(scope='session')
+def create_invalid_date_year():
+    start_time = datetime(year=2017, month=1, day=1, hour=5, minute=14)
+    end_time = datetime(year=2018, month=1, day=1, hour=5, minute=53)
+
+    return start_time, end_time
+
+
+def test_invalid_activity_year(create_tracker, create_invalid_date_year):
+    fitness_tracker = create_tracker
+    start_time, end_time = create_invalid_date_year
+
+    with pytest.raises(Exception) as exp:
+        fitness_tracker.log_activity("run", start_time, end_time)
+
+    assert str(exp.value) == ('A new activity must not conflict with a logged activity. ' +
+                              'Please delete the old activity before proceeding')
+
+
+def test_add_more_valid_activities(create_tracker):
+    fitness_tracker = create_tracker
+
+    start_time = datetime(year=2017, month=2, day=1, hour=5, minute=12)
+    end_time = datetime(year=2017, month=2, day=1, hour=5, minute=55)
+
+    fitness_tracker.log_activity("walk", start_time, end_time)
+    activities = fitness_tracker.get_activities()
+
+    assert len(activities) == 2
+    assert activities[1][0] == 'walk'
