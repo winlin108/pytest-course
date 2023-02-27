@@ -1,13 +1,7 @@
 class MapData():
-    def __init__(self, data):
+    def __init__(self, data, updated):
         self._data = data
         self._updated = self.updated_population_count()
-
-        # if updated:  # if this value is True
-        #     if self.updated_population_count():
-        #         self._updated = updated
-        #     else:
-        #         self._updated = False
 
 
     def get_data(self):
